@@ -3,19 +3,37 @@ const express = require('express');
 
 const app = express();//creation d'une appliquation Express
 
-app.use((req,
-         resp,
-         next)=>{
-    console.log('requete recue 1');
-    resp.status(203);
-    //resp.json({message:"Bienvenue sur Express Server"});
-    next.call();
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    next();
+});
+//gerer le CORS:
+// autoriser toutes les origines et toutes les methode sur tous les url,
+//authoriser les header: {Origin, X-Requested-With, Content, Accept, Content-Type, Authorization}
+//c'est le premier filtre qui s'applique avant redirection vers tout urls
+
+app.use('/api/stuff', (req, res, next) => {
+    const stuff = [
+        {
+            _id: 'oeihfzeoi',
+            title: 'Mon premier objet',
+            description: 'Les infos de mon premier objet',
+            imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+            price: 4900,
+            userId: 'qsomihvqios',
+        },
+        {
+            _id: 'oeihfzeomoihi',
+            title: 'Mon deuxième objet',
+            description: 'Les infos de mon deuxième objet',
+            imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+            price: 2900,
+            userId: 'qsomihvqios',
+        },
+    ];
+    res.status(200).json(stuff);
 });
 
-app.use((req,
-         resp)=>{
-    console.log('recue 2');
-    resp.json({message:"Bienvenue sur Express Server"})
-});//peu importe le type de requette c est tjrs use qui serai execute.
-
-module.exports=app;//rendre l'application exportable,importable depuis les autres fichiers.
+module.exports=app;

@@ -14,7 +14,16 @@ app.use((req, res, next) => {
 //authoriser les header: {Origin, X-Requested-With, Content, Accept, Content-Type, Authorization}
 //c'est le premier filtre qui s'applique avant redirection vers tout urls
 
-app.use('/api/stuff', (req, res, next) => {
+app.use(express.json());//capture les req sous format json
+
+app.post('/api/stuff',(req,
+                       res,
+                       next)=>{
+    console.log(req.body);
+    res.status(200).json({monmsg:"test succeeded..."});
+});
+
+app.get('/api/stuff', (req, res, next) => {
     const stuff = [
         {
             _id: 'oeihfzeoi',

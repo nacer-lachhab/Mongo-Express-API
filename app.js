@@ -1,5 +1,6 @@
 //contenue de l'application Express
 const express = require('express');
+const bodyParser= require('body-parser');
 const mongoose = require('mongoose');//connexion to DB mongoDB
 
 const app = express();//creation d'une appliquation Express
@@ -21,7 +22,8 @@ app.use((req, res, next) => {
 //authoriser les header: {Origin, X-Requested-With, Content, Accept, Content-Type, Authorization}
 //c'est le premier filtre qui s'applique avant redirection vers tout urls
 
-app.post(express.json());//capture les req sous format json,les met dans l'objet req
+// app.post(express.json());//capture les req sous format json,les met dans l'objet req
+app.use(bodyParser.json());//de mm que: app.use(express.json())
 
 app.post('/api/stuff',(req,
                        res,

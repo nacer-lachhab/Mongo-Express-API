@@ -1,7 +1,14 @@
 //contenue de l'application Express
 const express = require('express');
+const mongoose = require('mongoose');//connexion to DB mongoDB
 
 const app = express();//creation d'une appliquation Express
+
+mongoose.connect('mongodb+srv://nacerLACHHAB:n22a01c1995@cluster0.i5tukzj.mongodb.net/?retryWrites=true&w=majority',
+    { useNewUrlParser: true,
+        useUnifiedTopology: true })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

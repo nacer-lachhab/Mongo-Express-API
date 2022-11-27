@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 //authoriser les header: {Origin, X-Requested-With, Content, Accept, Content-Type, Authorization}
 //c'est le premier filtre qui s'applique avant redirection vers tout urls
 
-app.use(express.json());//capture les req sous format json
+app.post(express.json());//capture les req sous format json,les met dans l'objet req
 
 app.post('/api/stuff',(req,
                        res,

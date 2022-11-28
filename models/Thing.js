@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');//model mongoose; permetant l'interaction avec mongoDB
 
 const ThingSchema = mongoose.Schema({
     title: {type:String,required:true} ,

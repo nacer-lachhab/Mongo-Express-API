@@ -13,6 +13,8 @@ mongoose.connect('mongodb+srv://nacerLACHHAB:n22a01c1995@cluster0.i5tukzj.mongod
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+//filtre sur tous urls, gestion de CORS, permit ttes les origines & ttes les methode sur tte url,
+//authoriser les header: {Origin, X-Requested-With, Content, Accept, Content-Type, Authorization}
 app.use((req,
          res,
          next) => {
@@ -22,10 +24,6 @@ app.use((req,
     // console.log('permited');
     next();
 })
-//gerer le CORS:
-// autoriser toutes les origines et toutes les methode sur tous les url,
-//authoriser les header: {Origin, X-Requested-With, Content, Accept, Content-Type, Authorization}
-//c'est le premier filtre qui s'applique avant redirection vers tout urls
 
 // app.post(express.json());//capture les req sous format json,les met dans l'objet req
 app.use(bodyParser.json());//de mm que: app.use(express.json())

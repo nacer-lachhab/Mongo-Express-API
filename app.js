@@ -6,6 +6,7 @@ const mongoose = require('mongoose');//connexion to DB mongoDB
 const app = express();//creation d'une appliquation Express
 
 const stuffRoutes = require('./routes/stuff');
+const userRouter = require('./routes/userRouter');
 
 mongoose.connect('mongodb+srv://nacerLACHHAB:n22a01c1995@cluster0.i5tukzj.mongodb.net/?retryWrites=true&w=majority',
     { useNewUrlParser: true,
@@ -29,5 +30,7 @@ app.use((req,
 app.use(bodyParser.json());//de mm que: app.use(express.json())
 
 app.use('/api/stuff',stuffRoutes);
+
+app.use('/api/auth',userRouter);//racine de tous les routes d'authentification
 
 module.exports=app;

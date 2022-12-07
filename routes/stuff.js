@@ -1,19 +1,20 @@
 //gerer le routage des objets -stuff-
 const express = require('express');
+const auth = require('../midelware/auth')
 const router = express.Router();
 
 const Thing = require('../models/Thing');
 const stuffController = require("../controllers/stuffController");
 
-router.post('/',stuffController.createThing);
+router.post('/',auth ,stuffController.createThing);
 //ne pas mettre de parenthese on appel la fonction, on ne l'applique pas sur la route.
 
-router.get('/:id', stuffController.getThingById)
+router.get('/:id',auth , stuffController.getThingById)
 
-router.get('/', stuffController.geAllThings);
+router.get('/',auth , stuffController.geAllThings);
 
-router.put('/:id',stuffController.editThing)
+router.put('/:id',auth ,stuffController.editThing)
 
-router.delete('/:id',stuffController.removeThing)
+router.delete('/:id',auth ,stuffController.removeThing)
 
 module.exports=router;

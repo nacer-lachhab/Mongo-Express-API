@@ -12,12 +12,12 @@ const stuffController = require("../controllers/stuffController");
 router.post('/',auth ,multer ,stuffController.createThing);
 //ne pas mettre de parenthese on appel la fonction, on ne l'applique pas sur la route.
 
-router.get('/:id',auth , stuffController.getThingById);
+router.get('/:id',auth, stuffController.getThingById);
 
-router.get('/',auth  , stuffController.geAllThings);
+router.get('/',auth, stuffController.geAllThings);
 
-router.put('/:id',auth  ,stuffController.editThing)
+router.put('/:id', auth, multer, stuffController.editThing)
 
-router.delete('/:id',auth  ,stuffController.removeThing)
+router.delete('/:id', auth, stuffController.removeThing)
 
 module.exports=router;

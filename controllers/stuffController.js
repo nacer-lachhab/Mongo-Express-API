@@ -1,4 +1,5 @@
 const Thing = require("../models/Thing");
+const fs = require('fs');//gestion de fichier en locale, image dans ce cas.
 
 exports.getThingById=(req, resp, next)=>{
     // console.log('dedand');
@@ -37,14 +38,43 @@ exports.createThing=(req,res,next)=>{
 };
 
 exports.editThing=(req,res,next)=>{
+    const thingReq = req.file ? {
+        ...JSON.parse(req.body.thing),
+        imageUrl:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : {...req.body};
+    delete delete thingReq._userId;/////////tester: thingReq._userId
+
+    Thing.findOne({_id:req.params.id})
+        .then((thing)=>{
+            if (thing.userId != req.auth.userId){
+                res.status(401).json({message : 'non authorisé...'});
+            }else {
+                Thing.updateOne({_id:req.params.id},{...thingReq,_id:req.params.id})
+                    .then(()=>res.status(200).json("Objet modifié avec succes..."))
+                    .catch(error=>res.status(400).json({error}));
+            }
+        })
+        .catch(error=>res.status(500).json({error}));
     ////id depuis la base mongoDB et pas l'id genere par defaut depuis le frontend qui change a chaque fois
-    Thing.updateOne({_id:req.params.id},{...req.body,_id:req.params.id})
-        .then(()=>res.status(200).json("Objet modifié avec succes..."))
-        .catch(error=>res.status(400).json({error}));
+    // Thing.updateOne({_id:req.params.id},{...req.body,_id:req.params.id})
+    //     .then(()=>res.status(200).json("Objet modifié avec succes..."))
+    //     .catch(error=>res.status(400).json({error}));
 };
 
 exports.removeThing=(req, res, next)=>{
-    Thing.deleteOne({_id:req.params.id})
-        .then(()=>res.status(200).json({msg:"Objet supprimé avec succes..."}))
-        .catch(error=>res.status(400).json({error}));
+    Thing.findOne({_id:req.params.id})
+        .then((thing)=>{
+            if(thing.userId != req.auth.userId){
+                res.status(401).json({message : 'non authorisé...'});
+            }else {
+                const filename = thing.imageUrl.split('/images/')[1];
+                //fs.unlink() method is used to remove a file or symbolic link from the filesystem.
+                fs.unlink(`images/${filename}`,()=>{
+                    Thing.deleteOne({_id:req.params.id})
+                        .then(()=>res.status(200).json({message:'Objet Supprimé avec succé...'}))
+                        .catch(error=>res.status(500).json({error}));
+                })
+            }
+        })
+        .catch(error=>res.status(500).json({error}));
 };

@@ -29,7 +29,8 @@ app.use((req,
 // app.post(express.json());//capture les req sous format json,les met dans l'objet req
 app.use(bodyParser.json());//de mm que: app.use(express.json())
 
-app.use('/images',express.static(path.join(__dirname,'images')));//gestion d'images en local
+//routeur satique pour gestion d'images en local
+app.use('/images',express.static(path.join(__dirname,'images')));
 
 app.use('/api/stuff',stuffRoutes);
 app.use('/api/auth',userRouter);//racine de tous les routes d'authentification

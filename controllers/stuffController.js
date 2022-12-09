@@ -14,13 +14,26 @@ exports.geAllThings=(req, res, next) => {
 };//lectures des objets thing depuis BD
 
 exports.createThing=(req,res,next)=>{
-    delete req.body._id;//pour ne pas copier le champ '_id'
-    const thing_dto= new Thing({
-        ...req.body//raccourcie permetant copier les champs de req.body dans les attribus de Thing.
+    const thingObject = JSON.parse(req.body.thing);
+    delete thingObject._id;
+    delete thingObject.userId;
+    const thing_dto = new Thing({
+        ...thingObject,
+        userId:req.auth.userId,
+        imageUrl:`${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        //imageUrl:req.protocol+'://'+req.get('host')+"/images/"+req.file.filename
     });
-    thing_dto.save()//save retourne un promise
-        .then(()=>res.status(201).json({message:'Objet enregistré...'}))//a envoyer au client
-        .catch(error=>res.status(400).json({msgErreur:error}));
+
+    thing_dto.save()
+             .then(()=>res.status(201).json({message:'Objet enregistré...'}))
+             .catch(error=>res.status(400).json({msgErreur:error}));
+    // delete req.body._id;//pour ne pas copier le champ '_id'
+    // const thing_dto= new Thing({
+    //     ...req.body//raccourcie permetant copier les champs de req.body dans les attribus de Thing.
+    // });
+    // thing_dto.save()//save retourne un promise
+    //     .then(()=>res.status(201).json({message:'Objet enregistré...'}))//a envoyer au client
+    //     .catch(error=>res.status(400).json({msgErreur:error}));
 };
 
 exports.editThing=(req,res,next)=>{
